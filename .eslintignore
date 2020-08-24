@@ -1,0 +1,6 @@
+src/serviceWorker.ts
+src/**/__tests__/**
+postcss.config.js
+tailwind.config.js
+config/**/*
+scripts/**/*
