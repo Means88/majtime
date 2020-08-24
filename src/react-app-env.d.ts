@@ -35,8 +35,8 @@ declare module '*.png' {
 }
 
 declare module '*.webp' {
-    const src: string;
-    export default src;
+  const src: string;
+  export default src;
 }
 
 declare module '*.svg' {
@@ -46,6 +46,11 @@ declare module '*.svg' {
     SVGSVGElement
   > & { title?: string }>;
 
+  const src: string;
+  export default src;
+}
+
+declare module '*.mp3' {
   const src: string;
   export default src;
 }

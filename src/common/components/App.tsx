@@ -1,23 +1,15 @@
 import React from 'react';
-import logo from 'src/assets/logo.svg';
+import Block from './Block';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="text-gray-200">
-          Edit <code>src/App.tsx</code> and save to reload
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Block position="left" className="bg-red-300" />
+      <Block position="right" className="bg-red-300" />
+      <Block position="top" className="bg-blue-300" />
+      <Block position="bottom" className="bg-blue-300">
+        <span className="font-led text-3xl">20</span>
+      </Block>
     </div>
   );
 }

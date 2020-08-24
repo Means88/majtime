@@ -247,22 +247,7 @@ module.exports = {
       serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New',
       'monospace'],
-      title: [
-        'Karla',
-        'system-ui',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        '"Noto Sans"',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
-      ]
+      led: ['Digital7Mono', 'monospace'],
     },
     fontSize: {
       xs: '0.75rem',
