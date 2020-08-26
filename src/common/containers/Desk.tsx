@@ -64,7 +64,11 @@ const Desk: React.FC<Props> = ({ initialTime }) => {
       />
       <div
         className="absolute font-led text-6xl"
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+        style={{
+          top: '50%',
+          left: '50%',
+          transform: `translate(-50%, -50%) rotate(${-90 * (active || 0)}deg)`,
+        }}
       >
         {currentTimer?.time.overtime} + {currentTimer?.time.maintime}
       </div>
