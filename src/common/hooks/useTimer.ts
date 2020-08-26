@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useInterval } from 'react-use';
-import overAudio from '../../assets/over.mp3';
+// import overAudio from '../../assets/over.mp3';
 
-const audio = new Audio(overAudio);
-audio.loop = true;
-audio.play();
-audio.volume = 0.01;
+// const audio = new Audio(overAudio);
+// audio.loop = true;
+// audio.volume = 0.1;
 
 export interface Time {
   maintime: number;
@@ -24,10 +23,6 @@ export function useTimer(initial: Time) {
     time,
     isPaused: !Boolean(delay),
     start: () => {
-      setTime(({ overtime }) => ({
-        overtime,
-        maintime: initial.maintime,
-      }));
       setDelay(1000);
     },
     pause: () => setDelay(null),
@@ -53,12 +48,6 @@ function dec(time: Time): Time {
   }
 
   if (overtime > 0) {
-    if (overtime === 1) {
-      audio.volume = 1;
-      setTimeout(() => {
-        audio.volume = 0.01;
-      }, 3000);
-    }
     return {
       maintime: 0,
       overtime: overtime - 1,

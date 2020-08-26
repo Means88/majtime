@@ -5,7 +5,8 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   order: number;
-  position: 'top' | 'bottom' | 'left' | 'right';
+  position: 'top' | 'bottom' | 'left' | 'right' | 'center';
+  as?: any;
   inactive?: boolean;
   onClick?(order: number): void;
 }

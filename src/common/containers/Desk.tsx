@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faPauseCircle,
+  faPlayCircle,
+  faCog,
+} from '@fortawesome/free-solid-svg-icons';
 import CBlock from './CBlock';
 import { useTimer, Time } from '../hooks/useTimer';
+import IconButton from '../components/IconButton';
 
-interface Props {
-  initialTime: Time;
-}
+interface Props {}
 
-const Desk: React.FC<Props> = ({ initialTime }) => {
+const Desk: React.FC<Props> = () => {
+  const [initialTime, setInitial] = useState<Time>({
+    overtime: 20,
+    maintime: 8,
+  });
+  const [showConfig, setShowConfig] = useState(false);
+  const [overtime, setOvertime] = useState(initialTime.overtime);
+  const [maintime, setMaintime] = useState(initialTime.maintime);
+
   const t = [
     useTimer(initialTime),
     useTimer(initialTime),
@@ -23,12 +36,14 @@ const Desk: React.FC<Props> = ({ initialTime }) => {
 
     if (timer.isPaused) {
       setActive(order);
+      timer.next();
       timer.start();
       return;
     }
 
     const next = (order + 1) % 4;
     setActive(next);
+    t[next].next();
     t[next].start();
   }
 
@@ -72,6 +87,68 @@ const Desk: React.FC<Props> = ({ initialTime }) => {
       >
         {currentTimer?.time.overtime} + {currentTimer?.time.maintime}
       </div>
+      <CBlock as="div" order={-1} position="center">
+        <IconButton
+          className="text-4xl text-blue-600"
+          disabled={active === null}
+          onClick={() => {
+            if (!currentTimer) {
+              return;
+            }
+
+            if (currentTimer.isPaused) {
+              currentTimer.start();
+            } else {
+              currentTimer.pause();
+            }
+          }}
+        >
+          {!currentTimer || currentTimer.isPaused ? (
+            <FontAwesomeIcon icon={faPlayCircle} />
+          ) : (
+            <FontAwesomeIcon icon={faPauseCircle} />
+          )}
+        </IconButton>
+        <IconButton
+          className="ml-3"
+          onClick={() => {
+            setOvertime(initialTime.overtime);
+            setMaintime(initialTime.maintime);
+            setShowConfig(true);
+          }}
+        >
+          <FontAwesomeIcon icon={faCog} />
+        </IconButton>
+      </CBlock>
+      {showConfig && (
+        <CBlock as="div" order={-1} className="bg-white" position="center">
+          <div>
+            超时读秒：
+            <input
+              type="number"
+              value={overtime}
+              onChange={e => setOvertime(parseInt(e.target.value))}
+            />
+          </div>
+          <div className="mt-3">
+            每轮读秒：
+            <input
+              type="number"
+              value={maintime}
+              onChange={e => setMaintime(parseInt(e.target.value))}
+            />
+          </div>
+          <button
+            className="bg-blue-400 absolute w-full left-0 bottom-0 p-3 text-white rounded"
+            onClick={() => {
+              setInitial({ overtime, maintime });
+              setShowConfig(false);
+            }}
+          >
+            确定
+          </button>
+        </CBlock>
+      )}
     </div>
   );
 };
