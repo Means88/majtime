@@ -47,36 +47,50 @@ const Desk: React.FC<Props> = () => {
     t[next].start();
   }
 
+  const remain = currentTimer && (
+    <span className="font-led text-6xl">
+      {currentTimer?.time.overtime} + {currentTimer?.time.maintime}
+    </span>
+  );
+
   return (
     <div className="w-full h-full overflow-hidden">
       <CBlock
         order={0}
         position="bottom"
-        className="bg-blue-400"
+        className="bg-blue-400 flex justify-center items-center"
         inactive={active !== 0}
         onClick={handleClickBlock}
-      />
+      >
+        {remain}
+      </CBlock>
       <CBlock
         order={1}
         position="right"
-        className="bg-blue-400"
+        className="bg-blue-400 flex justify-center items-center"
         inactive={active !== 1}
         onClick={handleClickBlock}
-      />
+      >
+        {remain}
+      </CBlock>
       <CBlock
         order={2}
         position="top"
-        className="bg-blue-400"
+        className="bg-blue-400 flex justify-center items-center"
         inactive={active !== 2}
         onClick={handleClickBlock}
-      />
+      >
+        {remain}
+      </CBlock>
       <CBlock
         order={3}
         position="left"
-        className="bg-blue-400"
+        className="bg-blue-400 flex justify-center items-center"
         inactive={active !== 3}
         onClick={handleClickBlock}
-      />
+      >
+        {remain}
+      </CBlock>
       <div
         className="absolute font-led text-6xl"
         style={{
@@ -84,9 +98,7 @@ const Desk: React.FC<Props> = () => {
           left: '50%',
           transform: `translate(-50%, -50%) rotate(${-90 * (active || 0)}deg)`,
         }}
-      >
-        {currentTimer?.time.overtime} + {currentTimer?.time.maintime}
-      </div>
+      ></div>
       <CBlock as="div" order={-1} position="center">
         <IconButton
           className="text-4xl text-blue-600"
