@@ -13,25 +13,40 @@ export interface Time {
 
 export function useTimer(initial: Time) {
   const [time, setTime] = useState(initial);
+  const [temp, setTemp] = useState(time);
   const [delay, setDelay] = useState<number | null>(null);
 
   useInterval(() => {
-    setTime(dec);
+    setTemp(dec);
   }, delay);
 
   return {
     time,
+    temp,
     isPaused: !Boolean(delay),
     start: () => {
       setDelay(1000);
     },
     pause: () => setDelay(null),
-    reset: () => setTime(initial),
+    reset: () => {
+      setTime(initial);
+      setTemp(initial);
+    },
     next: () =>
-      setTime(({ overtime }) => ({
-        overtime,
-        maintime: initial.maintime,
-      })),
+      setTime(({ overtime }) => {
+        const t = {
+          overtime,
+          maintime: initial.maintime,
+        };
+        setTemp(t);
+        return t;
+      }),
+    commit: () => {
+      setTime(temp);
+    },
+    abort: () => {
+      setTemp(time);
+    },
   };
 }
 

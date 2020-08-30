@@ -26,100 +26,54 @@ const Desk: React.FC<Props> = () => {
     useTimer(initialTime),
     useTimer(initialTime),
   ];
-  const [active, setActive] = useState<number | null>(null);
-  const currentTimer = active === null ? null : t[active];
 
   function handleClickBlock(order: number) {
-    const timer = t[order];
-
-    currentTimer?.pause();
-
-    if (timer.isPaused) {
-      setActive(order);
-      timer.next();
-      timer.start();
-      return;
+    for (let i = 0; i < t.length; i++) {
+      if (i === order) {
+        t[i].commit();
+      } else {
+        t[i].abort();
+      }
+      t[i].next();
     }
-
-    const next = (order + 1) % 4;
-    setActive(next);
-    t[next].next();
-    t[next].start();
   }
 
-  const remain = currentTimer && (
-    <span className="font-led text-6xl">
-      {currentTimer?.time.overtime} + {currentTimer?.time.maintime}
-    </span>
-  );
+  function getRemainTime(order: number) {
+    const {
+      temp: { overtime, maintime },
+    } = t[order];
+    return `${overtime} + ${maintime}`;
+  }
+
+  const positions = ['bottom', 'right', 'top', 'left'] as const;
 
   return (
     <div className="w-full h-full overflow-hidden">
-      <CBlock
-        order={0}
-        position="bottom"
-        className="bg-blue-400 flex justify-center items-center"
-        inactive={active !== 0}
-        onClick={handleClickBlock}
-      >
-        {remain}
-      </CBlock>
-      <CBlock
-        order={1}
-        position="right"
-        className="bg-blue-400 flex justify-center items-center"
-        inactive={active !== 1}
-        onClick={handleClickBlock}
-      >
-        {remain}
-      </CBlock>
-      <CBlock
-        order={2}
-        position="top"
-        className="bg-blue-400 flex justify-center items-center"
-        inactive={active !== 2}
-        onClick={handleClickBlock}
-      >
-        {remain}
-      </CBlock>
-      <CBlock
-        order={3}
-        position="left"
-        className="bg-blue-400 flex justify-center items-center"
-        inactive={active !== 3}
-        onClick={handleClickBlock}
-      >
-        {remain}
-      </CBlock>
-      <div
-        className="absolute font-led text-6xl"
-        style={{
-          top: '50%',
-          left: '50%',
-          transform: `translate(-50%, -50%) rotate(${-90 * (active || 0)}deg)`,
-        }}
-      ></div>
+      {positions.map((p, index) => (
+        <CBlock
+          key={p}
+          order={index}
+          position={p}
+          className="bg-blue-400 flex justify-center items-center font-led text-6xl"
+          onClick={handleClickBlock}
+        >
+          {getRemainTime(index)}
+        </CBlock>
+      ))}
       <CBlock as="div" order={-1} position="center">
         <IconButton
           className="text-4xl text-blue-600"
-          disabled={active === null}
           onClick={() => {
-            if (!currentTimer) {
-              return;
-            }
-
-            if (currentTimer.isPaused) {
-              currentTimer.start();
+            if (t.every(x => x.isPaused)) {
+              t.forEach(x => x.start());
             } else {
-              currentTimer.pause();
+              t.forEach(x => x.pause());
             }
           }}
         >
-          {!currentTimer || currentTimer.isPaused ? (
-            <FontAwesomeIcon icon={faPlayCircle} />
-          ) : (
-            <FontAwesomeIcon icon={faPauseCircle} />
-          )}
+          <FontAwesomeIcon
+            icon={t.every(x => x.isPaused) ? faPlayCircle : faPauseCircle}
+          />
         </IconButton>
         <IconButton
           className="ml-3"
