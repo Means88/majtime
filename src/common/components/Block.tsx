@@ -43,14 +43,17 @@ const Block = styled.button<BlockProps>`
 
       /* width < height */
       @media (max-aspect-ratio: 1/1) {
-        height: 25%;
+        height: 25vw;
         width: 50vh;
         ${props.position === 'left' ? `left: 0;` : `right: 0;`}
 
+        transform-origin: ${
+          props.position === 'left' ? `top left` : `top right`
+        };
         transform: ${props.position === 'left' &&
-          `translate(-12.5vh, -50%) rotate(90deg)`}
+          `rotate(90deg) translate(-50%, -100%)`}
           ${props.position === 'right' &&
-            `translate(12.5vh, -50%) rotate(-90deg)`};
+            `rotate(-90deg) translate(50%, -100%)`};
       }
     `}
 
